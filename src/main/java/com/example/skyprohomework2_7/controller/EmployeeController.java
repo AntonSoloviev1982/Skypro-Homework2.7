@@ -1,13 +1,14 @@
 package com.example.skyprohomework2_7.controller;
 
+import com.example.skyprohomework2_7.model.Employee;
+import com.example.skyprohomework2_7.service.EmployeeService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import pro.sky.skyprohomework25.service.Employee;
-import pro.sky.skyprohomework25.service.EmployeeService;
 
-import java.util.List;
+
+import java.util.Map;
 
 @RestController
 @RequestMapping("/employee")
@@ -19,28 +20,26 @@ public class EmployeeController {
     }
 
     @GetMapping("/add")
-    public Employee addNewEmployee(@RequestParam("firstName") String firstName,
-                                   @RequestParam("lastName") String lastName) {
-        return employeeService.addNewEmployee(firstName, lastName);
+    public Employee addNewEmployee(@RequestParam("fullName") String fullName,
+                                   @RequestParam("salary") int salary) {
+        return employeeService.addNewEmployee(fullName, salary);
     }
 
     @GetMapping("/remove")
-    public Employee removeEmployee(@RequestParam("firstName") String firstName,
-                                   @RequestParam("lastName") String lastName) {
-        return employeeService.removeEmployee(firstName, lastName);
+    public Employee removeEmployee(@RequestParam("fullName") String fullName,
+                                   @RequestParam("salary") int salary) {
+        return employeeService.removeEmployee(fullName, salary);
     }
 
     @GetMapping("/find")
-    public Employee findEmployee(@RequestParam("firstName") String firstName,
-                                   @RequestParam("lastName") String lastName) {
-        return employeeService.findEmployee(firstName, lastName);
+    public Employee findEmployee(@RequestParam("fullName") String fullName,
+                                 @RequestParam("salary") int salary) {
+        return employeeService.findEmployee(fullName, salary);
     }
 
     @GetMapping("/getAll")
-    public List<Employee> getAllEmployees() {
-        List<Employee> allEmployees = employeeService.getAllEmployees();
-        return allEmployees;
+    public Map<String, Employee> getAllEmployees() {
+        return employeeService.getAllEmployees();
     }
-
 
 }
