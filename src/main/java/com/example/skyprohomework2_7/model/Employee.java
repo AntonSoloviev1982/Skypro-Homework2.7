@@ -5,24 +5,49 @@ import java.util.Objects;
 
 public class Employee {
 
-    private String fullName;
-
+    private String name;
+    private String patronymic;
+    private String surname;
     private int salary;
+    private int department;
 
     public Employee() {
     }
 
-    public Employee(String fullName, int salary) {
-        this.fullName = fullName;
+    public Employee(String name, String patronymic, String surname, int salary, int department) {
+        this.name = name;
+        this.patronymic = patronymic;
+        this.surname = surname;
         this.salary = salary;
+        this.department = department;
     }
 
-    public String getFullName() {
-        return fullName;
+    public String getFullName(Employee employee) {
+        return employee.getSurname() + " " + employee.getName() + " " + employee.getPatronymic();
     }
 
     public int getSalary() {
         return salary;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getPatronymic() {
+        return patronymic;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public int getDepartment() {
+        return department;
+    }
+
+    public void setSalary(int salary) {
+        this.salary = salary;
     }
 
     @Override
@@ -30,19 +55,22 @@ public class Employee {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Employee employee = (Employee) o;
-        return salary == employee.salary && Objects.equals(fullName, employee.fullName);
+        return salary == employee.salary && department == employee.department && Objects.equals(name, employee.name) && Objects.equals(patronymic, employee.patronymic) && Objects.equals(surname, employee.surname);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(fullName, salary);
+        return Objects.hash(name, patronymic, surname, salary, department);
     }
 
     @Override
     public String toString() {
         return "Employee{" +
-                "fullName='" + fullName + '\'' +
+                "name='" + name + '\'' +
+                ", patronymic='" + patronymic + '\'' +
+                ", surname='" + surname + '\'' +
                 ", salary=" + salary +
+                ", department=" + department +
                 '}';
     }
 }

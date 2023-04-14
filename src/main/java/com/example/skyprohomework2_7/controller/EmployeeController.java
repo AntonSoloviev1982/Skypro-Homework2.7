@@ -20,21 +20,30 @@ public class EmployeeController {
     }
 
     @GetMapping("/add")
-    public Employee addNewEmployee(@RequestParam("fullName") String fullName,
-                                   @RequestParam("salary") int salary) {
-        return employeeService.addNewEmployee(fullName, salary);
+    public Employee addNewEmployee(@RequestParam("name") String name,
+                                   @RequestParam("patronymic") String patronymic,
+                                   @RequestParam("surname") String surname,
+                                   @RequestParam("salary") int salary,
+                                   @RequestParam("department") int department) {
+        return employeeService.addNewEmployee(name, patronymic, surname, salary, department);
     }
 
     @GetMapping("/remove")
-    public Employee removeEmployee(@RequestParam("fullName") String fullName,
-                                   @RequestParam("salary") int salary) {
-        return employeeService.removeEmployee(fullName, salary);
+    public Employee removeEmployee(@RequestParam("name") String name,
+                                   @RequestParam("patronymic") String patronymic,
+                                   @RequestParam("surname") String surname,
+                                   @RequestParam("salary") int salary,
+                                   @RequestParam("department") int department) {
+        return employeeService.removeEmployee(name, patronymic, surname, salary, department);
     }
 
     @GetMapping("/find")
-    public Employee findEmployee(@RequestParam("fullName") String fullName,
-                                 @RequestParam("salary") int salary) {
-        return employeeService.findEmployee(fullName, salary);
+    public Employee findEmployee(@RequestParam("name") String name,
+                                 @RequestParam("patronymic") String patronymic,
+                                 @RequestParam("surname") String surname,
+                                 @RequestParam("salary") int salary,
+                                 @RequestParam("department") int department) {
+        return employeeService.findEmployee(name, patronymic, surname, salary, department);
     }
 
     @GetMapping("/getAll")

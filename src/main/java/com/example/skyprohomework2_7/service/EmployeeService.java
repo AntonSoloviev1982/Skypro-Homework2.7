@@ -6,44 +6,52 @@ import com.example.skyprohomework2_7.model.Employee;
 import org.springframework.stereotype.Service;
 
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
 
 @Service
 public class EmployeeService {
-    private Map<String, Employee> employees = new HashMap<>();
+    private final Map<String, Employee> employees = new HashMap<>();
 
-    public Employee addNewEmployee(String fullName, int salary) {
-        Employee employee = new Employee(fullName, salary);
-        if (!employees.containsKey(employee.getFullName())) {
-            employees.put(employee.getFullName(), employee);
+    public Map<String, Employee> getEmployees() {
+        return employees;
+    }
+
+
+    public Employee addNewEmployee(String name, String patronymic, String surname, int salary, int department) {
+        Employee employee = new Employee(name, patronymic, surname, salary, department);
+        if (!employees.containsKey(employee.getFullName(employee))) {
+            employees.put(employee.getFullName(employee), employee);
         } else {
             throw new EmployeeAlreadyAddedException("EmployeeAlreadyAdded");
         }
         return employee;
     }
 
-    public Employee removeEmployee(String fullName, int salary) {
-        Employee employee = new Employee(fullName, salary);
-        if (employees.containsKey(employee.getFullName())) {
-            employees.remove(employee.getFullName());
+    public Employee removeEmployee(String name, String patronymic, String surname, int salary, int department) {
+        Employee employee = new Employee(name, patronymic, surname, salary, department);
+        if (employees.containsKey(employee.getFullName(employee))) {
+            employees.remove(employee.getFullName(employee));
         } else {
             throw new EmployeeNotFoundException("EmployeeNotFound");
         }
         return employee;
     }
 
-    public Employee findEmployee(String fullName, int salary) {
-        Employee employee = new Employee(fullName, salary);
-        if (!employees.containsKey(fullName)) {
+    public Employee findEmployee(String name, String patronymic, String surname, int salary, int department) {
+        Employee employee = new Employee(name, patronymic, surname, salary, department);
+        if (!employees.containsKey(employee.getFullName(employee))) {
             throw new EmployeeNotFoundException("EmployeeNotFound");
         }
         return employee;
     }
 
     public Map<String, Employee> getAllEmployees() {
-        return employees;
+        return Collections.unmodifiableMap(employees);
     }
+
+
 
 }
