@@ -3,8 +3,9 @@ package com.example.skyprohomework2_7.service;
 import com.example.skyprohomework2_7.model.Employee;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
-import java.util.Optional;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class EmployeeServiceByDepartment {
@@ -16,25 +17,20 @@ public class EmployeeServiceByDepartment {
     }
 
     public void increaseSalaryOnPercent(int percent) {
-        System.out.println();
         employeeService.getEmployees().values().stream()
                 .forEach(e -> e.setSalary(e.getSalary() * percent / 100 + e.getSalary()));
     }
 
     public Employee getEmployeeWithMinSalaryFromDepartment(int departmentId) {
-        Optional<Employee> employee = employeeService.getEmployees().values().stream()
+        return employeeService.getEmployees().values().stream()
                 .filter(e -> e.getDepartment() == departmentId)
-                .min((x, y) -> x.getSalary() - y.getSalary());
-        return employee;
+                .min((x, y) -> x.getSalary() - y.getSalary()).get();
     }
 
-    public void getEmployeeWithMaxSalaryFromDepartment(int departmentId) {
-        Optional<Employee> employee = employeeService.getEmployees().values().stream()
+    public Employee getEmployeeWithMaxSalaryFromDepartment(int departmentId) {
+        return employeeService.getEmployees().values().stream()
                 .filter(e -> e.getDepartment() == departmentId)
-                .max((x, y) -> x.getSalary() - y.getSalary());
-        System.out.println("\nСотрудник - " + employee.get().getSurname() + " " + employee.get().getName() +
-                " из отдела " + employee.get().getDepartment() + ", получает самую большую зарплату: "
-                + employee.get().getSalary());
+                .max((x, y) -> x.getSalary() - y.getSalary()).get();
     }
 
     public double getAmountOfSalaryByDepartment(int departmentId) {
@@ -63,18 +59,13 @@ public class EmployeeServiceByDepartment {
                 .forEach(e -> e.setSalary(e.getSalary() * percent / 100 + e.getSalary()));
     }
 
-    public void getAllEmployeesByDepartment(int departmentId) {
-        System.out.println();
-        System.out.println("\nОтдел: " + departmentId);
-        employeeService.getEmployees().values().stream()
+    public List<Employee> getAllEmployeesByDepartment(int departmentId) {
+        return employeeService.getEmployees().values().stream()
                 .filter(e -> e.getDepartment() == departmentId)
-                .forEach(e ->
-                        System.out.println("ФИО: " + e.getSurname() + " " + e.getName() + " "
-                                + e.getPatronymic() + ", зарплата: " + e.getSalary()));
+                .collect(Collectors.toList());
     }
 
     public void getSalaryLessThenNumber(double number) {
-        System.out.println();
         employeeService.getEmployees().values().stream()
                 .filter(e -> e.getSalary() < number)
                 .forEach(e ->
@@ -83,7 +74,6 @@ public class EmployeeServiceByDepartment {
     }
 
     public void getSalaryMoreOrEquallyThenNumber(double number) {
-        System.out.println();
         employeeService.getEmployees().values().stream()
                 .filter(e -> e.getSalary() >= number)
                 .forEach(e ->
@@ -91,28 +81,8 @@ public class EmployeeServiceByDepartment {
                                 ", зарплата: " + e.getSalary()));
     }
 
-    public void getAllEmployeesByAllDepartment() {
-        int[] allDepartments = new int[10];
-        for (int i = 0; i < employees.length; i++) {
-            if (employees[i] != null) {
-                allDepartments[i] = employees[i].getDepartment();
-            }
-        }
-//
-        int[] uniqueDepartments = Arrays.stream(allDepartments).distinct().toArray();
-        Arrays.sort(uniqueDepartments);
-
-        for (int i = 0; i < uniqueDepartments.length; i++) {
-            if (uniqueDepartments[i] != 0) {
-                System.out.println("\nОтдел " + uniqueDepartments[i]);
-                for (Employee emp : employees) {
-                    if (emp != null) {
-                        if (uniqueDepartments[i] == emp.getDepartment()) {
-                            System.out.println("ФИО: " + emp.getSurname() + " " + emp.getName() + " " + emp.getPatronymic());
-                        }
-                    }
-                }
-            }
-        }
+    public Map<Integer, List<Employee>> getAllEmployeesByAllDepartment() {
+        return employeeService.getEmployees().values().stream()
+                .collect(Collectors.groupingBy(e -> e.getDepartment()));
     }
 }
