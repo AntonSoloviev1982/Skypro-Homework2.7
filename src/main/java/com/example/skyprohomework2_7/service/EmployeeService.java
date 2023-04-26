@@ -3,63 +3,56 @@ package com.example.skyprohomework2_7.service;
 import com.example.skyprohomework2_7.exception.EmployeeAlreadyAddedException;
 import com.example.skyprohomework2_7.exception.EmployeeNotFoundException;
 import com.example.skyprohomework2_7.model.Employee;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 
-import java.util.ArrayList;
-import java.util.List;
-
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 
 @Service
 public class EmployeeService {
-    private List<Employee> employees = new ArrayList<>(List.of(
-            new Employee("Иван", "Иванов"),
-            new Employee("Сергей", "Сергеев"),
-            new Employee("Петр", "Петров")));
+    private final Map<String, Employee> employees = new HashMap<>();
 
-    public Employee addNewEmployee(String firstName, String lastName) {
-        Employee employee = new Employee(firstName, lastName);
-        isEmployeeAdded(employee);
-        employees.add(employee);
-        return employee;
-    }
-
-    public Employee removeEmployee(String firstName, String lastName) {
-        Employee employee = new Employee(firstName, lastName);
-        checkEmployee(employee);
-        for (int i = 0; i < employees.size(); i++) {
-            if (employees.get(i).equals(employee)) {
-                employees.remove(employee);
-            }
-        }
-        return employee;
-    }
-
-    public Employee findEmployee(String firstName, String lastName) {
-        Employee employee = new Employee(firstName, lastName);
-        checkEmployee(employee);
-        return employee;
-    }
-
-    public List<Employee> getAllEmployees() {
+    public Map<String, Employee> getEmployees() {
         return employees;
     }
 
 
-    public void isEmployeeAdded(Employee employee) {
-            if (employees.contains(employee)) {
-                throw new EmployeeAlreadyAddedException("EmployeeAlreadyAdded");
+    public Employee addNewEmployee(String name, String patronymic, String surname, int salary, int department) {
+        Employee employee = new Employee(name, patronymic, surname, salary, department);
+        if (!employees.containsKey(employee.getFullName(employee))) {
+            employees.put(employee.getFullName(employee), employee);
+        } else {
+            throw new EmployeeAlreadyAddedException("EmployeeAlreadyAdded");
         }
+        return employee;
     }
 
-    public void checkEmployee(Employee employee) {
-        for (int i = 0; i < employees.size(); i++) {
-            if (employees.get(i).equals(employee)) {
-                return;
-            }
+    public Employee removeEmployee(String name, String patronymic, String surname, int salary, int department) {
+        Employee employee = new Employee(name, patronymic, surname, salary, department);
+        if (employees.containsKey(employee.getFullName(employee))) {
+            employees.remove(employee.getFullName(employee));
+        } else {
             throw new EmployeeNotFoundException("EmployeeNotFound");
         }
+        return employee;
     }
+
+    public Employee findEmployee(String name, String patronymic, String surname, int salary, int department) {
+        Employee employee = new Employee(name, patronymic, surname, salary, department);
+        if (!employees.containsKey(employee.getFullName(employee))) {
+            throw new EmployeeNotFoundException("EmployeeNotFound");
+        }
+        return employee;
+    }
+
+    public Map<String, Employee> getAllEmployees() {
+        return Collections.unmodifiableMap(employees);
+    }
+
+
 
 }
